@@ -1,6 +1,14 @@
+const db = require("./src/db/db-config.js");
 require("dotenv").config();
 const app = require("./src/app.js");
 
-app.listen(process.env.PORT_APP || 3000, () => {
-  console.log("app run on port 3000");
+db.connect((err) => {
+  if (err) {
+    console.error("Failed to connect to the database:", err);
+    process.exit(1); // Exit the process with an error code
+  }
+
+  app.listen(process.env.PORT_APP, () => {
+    console.log(`App running on port ${process.env.PORT_APP}`);
+  });
 });
