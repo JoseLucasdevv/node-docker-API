@@ -27,6 +27,7 @@ function createNewUser(req, res) {
     message: "error to create user";
   }
 }
+
 function updateUser(req, res) {
   try {
     const { results, fields } = _userRepository.update(
@@ -43,8 +44,22 @@ function updateUser(req, res) {
   }
 }
 
+function deleteUser(req, res) {
+  try {
+    const { results, fields } = _userRepository.delete(req.params["id"]);
+    res
+      .json({
+        message: "success Delete User",
+      })
+      .status(201);
+  } catch (e) {
+    message: "error to Delete user";
+  }
+}
+
 module.exports = {
   listAllUsers,
   createNewUser,
   updateUser,
+  deleteUser,
 };
