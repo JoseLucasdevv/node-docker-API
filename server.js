@@ -17,11 +17,11 @@ db.connect((err) => {
 
   db.query(sql, (err) => {
     if (err) {
-      console.log("deu pau");
+      console.error("Failed to create query", err);
     }
   });
   console.log("db connect");
-  app.listen(process.env.PORT_APP, () => {
-    console.log(`App running on port ${process.env.PORT_APP}`);
+  app.listen(process.env.PORT_APP || 3000, () => {
+    console.log(`App running on port ${process.env.PORT_APP || 3000}`);
   });
 });
