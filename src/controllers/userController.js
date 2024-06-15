@@ -1,9 +1,7 @@
-const { json } = require("express");
 const repository = require("../repositories/UserRepositories");
+const _userRepository = new repository();
 
 const listAllUsers = (req, res) => {
-  const _userRepository = new repository();
-
   _userRepository.list((err, users) => {
     if (err) {
       return res.status(500).json({
@@ -18,7 +16,6 @@ const listAllUsers = (req, res) => {
 };
 
 function createNewUser(req, res) {
-  const _userRepository = new repository();
   try {
     const { results, fields } = _userRepository.create(req.body);
     res
@@ -30,8 +27,24 @@ function createNewUser(req, res) {
     message: "error to create user";
   }
 }
+function updateUser(req, res) {
+  try {
+    const { results, fields } = _userRepository.update(
+      req.params["id"],
+      req.body
+    );
+    res
+      .json({
+        message: "success Update User",
+      })
+      .status(201);
+  } catch (e) {
+    message: "error to Update user";
+  }
+}
 
 module.exports = {
   listAllUsers,
   createNewUser,
+  updateUser,
 };
