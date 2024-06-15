@@ -30,6 +30,22 @@ class UserRepositorie {
     );
     return { results, fields };
   }
+
+  update(id, { name, age }) {
+    const sql = `UPDATE user SET name=?,age=? WHERE id=?`;
+    const { results, fields } = db.query(
+      sql,
+      [name, age, id],
+      (err, results, fields) => {
+        if (err) {
+          console.error("error executing query: " + err.stack);
+          return;
+        }
+        return { results, fields };
+      }
+    );
+    return { results, fields };
+  }
 }
 
 module.exports = UserRepositorie;
