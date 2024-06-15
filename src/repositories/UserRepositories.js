@@ -46,6 +46,18 @@ class UserRepositorie {
     );
     return { results, fields };
   }
+
+  delete(id) {
+    const sql = `DELETE FROM user WHERE id=?`;
+    const { results, fields } = db.query(sql, [id], (err, results, fields) => {
+      if (err) {
+        console.error("error executing query: " + err.stack);
+        return;
+      }
+      return { results, fields };
+    });
+    return { results, fields };
+  }
 }
 
 module.exports = UserRepositorie;
