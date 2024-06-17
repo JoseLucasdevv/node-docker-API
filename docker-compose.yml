@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: nodejs_app
+    restart: always
+    ports:
+      - "${PORT_APP}:3000"
+    environment:
+      HOST_DB: ${HOST_DB}
+      DATABASE_NAME: ${DATABASE_NAME}
+      USERNAME_DB: ${USERNAME_DB}
+      PASSWORD_DB: ${PASSWORD_DB}
+      PORT_APP: ${PORT_APP}
+
+  db:
+    image: mysql:8.0
+    container_name: mysqlService
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+
+    volumes:
+      - /var/lib/mysql
