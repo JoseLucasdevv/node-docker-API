@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   app:
     build: .
@@ -13,19 +11,42 @@ services:
       USERNAME_DB: ${USERNAME_DB}
       PASSWORD_DB: ${PASSWORD_DB}
       PORT_APP: ${PORT_APP}
+    depends_on:
+      db:
+        condition: service_healthy
 
   db:
     image: mysql:8.0
-    container_name: mysqlService
-    restart: unless-stopped
+    container_name: mysql
+    restart: always
 
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
     ports:
       - "3307:3306"
 
     volumes:
-      - /var/lib/mysql
+      - mysql-data:/var/lib/mysql
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "-u$MYSQL_USER",
+          "-p$MYSQL_PASSWORD",
+          "ping",
+          "-h",
+          "localhost",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  mysql-data:
